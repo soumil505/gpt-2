@@ -8,6 +8,8 @@ import tensorflow as tf
 
 import model, sample, encoder
 
+with open("../input.txt","r") as f:
+	raw_text=f.read()
 def interact_model(
     model_name='124M',
     seed=None,
@@ -39,6 +41,7 @@ def interact_model(
      :models_dir : path to parent folder containing model subfolders
      (i.e. contains the <model_name> folder)
     """
+    global raw_text
     models_dir = os.path.expanduser(os.path.expandvars(models_dir))
     if batch_size is None:
         batch_size = 1
@@ -70,10 +73,10 @@ def interact_model(
         saver.restore(sess, ckpt)
 
         while True:
-            raw_text = input("Model prompt >>> ")
-            while not raw_text:
-                print('Prompt should not be empty!')
-                raw_text = input("Model prompt >>> ")
+#             raw_text = input("Model prompt >>> ")
+#             while not raw_text:
+#                 print('Prompt should not be empty!')
+#                 raw_text = input("Model prompt >>> ")
             context_tokens = enc.encode(raw_text)
             generated = 0
             for _ in range(nsamples // batch_size):
